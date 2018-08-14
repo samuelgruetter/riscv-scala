@@ -3,6 +3,7 @@
 *.glob
 *.aux
 .depend
+_CoqProject
 
 # emacs
 *~
