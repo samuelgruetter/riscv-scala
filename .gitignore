@@ -1,0 +1,12 @@
+# coq
+*.vo
+*.glob
+*.aux
+.depend
+
+# emacs
+*~
+\#*\
+
+# sbt
+target/
