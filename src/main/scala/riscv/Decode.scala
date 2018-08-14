@@ -347,12 +347,62 @@ val funct7_SRLW : Long = 0
 val funct7_SUB : Long = 32
 val funct7_SUBW : Long = 32
 val funct7_XOR : Long = 0
-def isValidA ( arg0 : InstructionA ) : Boolean = true // TODO
-def isValidA64 ( arg0 : InstructionA64 ) : Boolean = true // TODO
-def isValidCSR ( arg0 : InstructionCSR ) : Boolean = true // TODO
-def isValidI ( arg0 : InstructionI ) : Boolean = true // TODO
-def isValidI64 ( arg0 : InstructionI64 ) : Boolean = true // TODO
-def isValidM ( arg0 : InstructionM ) : Boolean = true // TODO
+def isValidA ( arg0 : InstructionA ) : Boolean = {
+arg0 match { case Lr_w     (_, _, _      )=> true; case Sc_w     (_, _, _, _)
+=> true; case Amoswap_w (_, _, _, _)=> true; case Amoadd_w (_, _, _, _)=>
+true; case Amoand_w (_, _, _, _)=> true; case Amoor_w  (_, _, _, _)=> true;
+case Amoxor_w (_, _, _, _)=> true; case Amomax_w (_, _, _, _)=> true;
+case Amomaxu_w (_, _, _, _)=> true; case Amomin_w (_, _, _, _)=> true;
+case Amominu_w (_, _, _, _)=> true case InvalidA => false} }
+def isValidA64 ( arg0 : InstructionA64 ) : Boolean = {
+arg0 match { case Lr_d     (_, _, _      )=> true; case Sc_d     (_, _, _, _)
+=> true; case Amoswap_d (_, _, _, _)=> true; case Amoadd_d (_, _, _, _)=>
+true; case Amoand_d (_, _, _, _)=> true; case Amoor_d  (_, _, _, _)=> true;
+case Amoxor_d (_, _, _, _)=> true; case Amomax_d (_, _, _, _)=> true;
+case Amomaxu_d (_, _, _, _)=> true; case Amomin_d (_, _, _, _)=> true;
+case Amominu_d (_, _, _, _)=> true; case InvalidA64                       =>
+false} }
+def isValidCSR ( arg0 : InstructionCSR ) : Boolean = {
+arg0 match { case Ecall                        => true;
+case Ebreak                       => true; case Uret
+=> true; case Sret                         => true;
+case Mret                         => true; case Wfi
+=> true; case Sfence_vma (_, _      )=> true; case Csrrw     (_, _, _ )=>
+true; case Csrrs     (_, _, _ )=> true; case Csrrc     (_, _, _ )=> true;
+case Csrrwi    (_, _ , _)=> true; case Csrrsi    (_, _ , _)=> true;
+case Csrrci    (_, _ , _)=> true; case InvalidCSR                   => false}
+}
+def isValidI ( arg0 : InstructionI ) : Boolean = {
+arg0 match { case Lb     (_, _, _ )=> true; case Lh     (_, _, _ )=> true;
+case Lw     (_, _, _ )=> true; case Lbu    (_, _, _ )=> true; case Lhu    (_,
+_, _ )=> true; case Fence  (_, _      )=> true;
+case Fence_i                   => true; case Addi   (_, _, _ )=> true;
+case Slli   (_, _, _ )=> true; case Slti   (_, _, _ )=> true; case Sltiu  (_,
+_, _ )=> true; case Xori   (_, _, _ )=> true; case Ori    (_, _, _ )=> true;
+case Andi   (_, _, _ )=> true; case Srli   (_, _, _ )=> true; case Srai   (_,
+_, _ )=> true; case Auipc  (_, _       )=> true; case Sb     (_, _, _ )=>
+true; case Sh     (_, _, _ )=> true; case Sw     (_, _, _ )=> true;
+case Add    (_, _, _)=> true; case Sub    (_, _, _)=> true; case Sll    (_,
+_, _)=> true; case Slt    (_, _, _)=> true; case Sltu   (_, _, _)=> true;
+case Xor    (_, _, _)=> true; case Srl    (_, _, _)=> true; case Sra    (_,
+_, _)=> true; case Or     (_, _, _)=> true; case And    (_, _, _)=> true;
+case Lui    (_, _       )=> true; case Beq    (_, _, _ )=> true; case Bne
+(_, _, _ )=> true; case Blt    (_, _, _ )=> true; case Bge    (_, _, _ )=>
+true; case Bltu   (_, _, _ )=> true; case Bgeu   (_, _, _ )=> true;
+case Jalr   (_, _, _ )=> true; case Jal    (_, _       )=> true;
+case InvalidI                  => false} }
+def isValidI64 ( arg0 : InstructionI64 ) : Boolean = {
+arg0 match { case Ld (_, _, _)=> true; case Lwu (_, _, _)=> true;
+case Addiw (_, _, _)=> true; case Slliw (_, _, _)=> true; case Srliw (_, _,
+_)=> true; case Sraiw (_, _, _)=> true; case Sd (_, _, _)=> true;
+case Addw (_, _, _)=> true; case Subw (_, _, _)=> true; case Sllw (_, _, _)=>
+true; case Srlw (_, _, _)=> true; case Sraw (_, _, _)=> true;
+case InvalidI64 => false; } }
+def isValidM ( arg0 : InstructionM ) : Boolean = {
+arg0 match { case Mul (_, _, _)=> true; case Mulh (_, _, _)=> true;
+case Mulhsu (_, _, _)=> true; case Mulhu (_, _, _)=> true; case Div (_, _, _)
+=> true; case Divu (_, _, _)=> true; case Rem (_, _, _)=> true; case Remu (_,
+_, _)=> true; case InvalidM => false} }
 def isValidM64 ( arg0 : InstructionM64 ) : Boolean = {
 arg0 match { case Mulw (_, _, _)=> true; case Divw (_, _, _)=> true;
 case Divuw (_, _, _)=> true; case Remw (_, _, _)=> true; case Remuw (_, _, _)

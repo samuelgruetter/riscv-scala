@@ -41,6 +41,56 @@ Ltac print_inductive T :=
       idtac "case class" c "(" a1 ":" T1 "," a2 ":" T2 "," a3 ":" T3 "," a4 ":" T4 ")" "extends" T
     end;
     admit ].
+
+(* output needs manual fixes, but gives the skeleton of what's needed *)
+Ltac print_inductive_match_notation T :=
+  idtac "Notation ""x 'match' {";
+  let x := fresh "x" in
+  let E := fresh "E" in
+  assert (x: T);
+  [ exfalso
+  | destruct x eqn: E;
+    match type of E with
+    | x = ?c =>
+      is_constructor c;
+      idtac "'case' '" c "' => e ;" 
+    | x = ?c ?a1 =>
+      is_constructor c;
+      idtac "'case' '" c "' (" a1 ") => e ;"
+    | x = ?c ?a1 ?a2 =>
+      is_constructor c;
+      idtac "'case' '" c "' (" a1 "," a2 ") => e ;"
+    | x = ?c ?a1 ?a2 ?a3 =>
+      is_constructor c;
+      idtac "'case' '" c "' (" a1 "," a2 "," a3 ") => e ;"
+    | x = ?c ?a1 ?a2 ?a3 ?a4 =>
+      is_constructor c;
+      idtac "'case' '" c "' (" a1 "," a2 "," a3 "," a4 ") => e ;"
+    end;
+    admit ];
+  idtac "}"" := (match x with";
+  assert (x: T);
+  [ exfalso
+  | destruct x eqn: E;
+    match type of E with
+    | x = ?c =>
+      is_constructor c;
+      idtac "|" c " => e" 
+    | x = ?c ?a1 =>
+      is_constructor c;
+      idtac "|" c a1 "=> e"
+    | x = ?c ?a1 ?a2 =>
+      is_constructor c;
+      idtac "|" c a1 a2 "=> e"
+    | x = ?c ?a1 ?a2 ?a3 =>
+      is_constructor c;
+      idtac "|" c a1 a2 a3 "=> e"
+    | x = ?c ?a1 ?a2 ?a3 ?a4 =>
+      is_constructor c;
+      idtac "|" c a1 a2 a3 a4 "=> e"
+    end;
+    admit ];
+  idtac "end) (at level 8).".
   
 Ltac print_fun0 f :=
   let T := type of f in
